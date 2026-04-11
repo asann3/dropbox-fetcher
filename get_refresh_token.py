@@ -23,7 +23,7 @@ def main():
     try:
         oauth_result = auth_flow.finish(auth_code)
         print("以下の情報を .env に追記してください。")
-        print(f"DROPBOX_REFRESH_TOKEN={oauth_result.refresh_token}")
+        print(f"REFRESH_TOKEN={oauth_result.refresh_token}")
     except Exception as e:
         print(f"エラーが発生しました: {e}")
 
