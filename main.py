@@ -11,7 +11,8 @@ APP_KEY = os.getenv('APP_KEY')
 APP_SECRET = os.getenv('APP_SECRET')
 REFRESH_TOKEN = os.getenv('REFRESH_TOKEN')
 WEBHOOK_URL = os.getenv('WEBHOOK_URL')
-DROPBOX_FOLDER = '' 
+DROPBOX_FOLDER = os.getenv('DROPBOX_FOLDER')
+
 LOCAL_BASE_DIR = ''
 
 def get_fiscal_year(date_obj):
@@ -59,8 +60,11 @@ def main():
                     prefix_len = len(DROPBOX_FOLDER)
 
                     relative_path = entry.path_display[prefix_len:].lstrip('/')
+
+                    if '/' not in relative_path:
+                        continue
                     local_path = os.path.join(target_dir, relative_path)
-                    
+
                     os.makedirs(os.path.dirname(local_path), exist_ok=True)
 
                     folder_path_lower = os.path.dirname(entry.path_lower)
@@ -81,7 +85,7 @@ def main():
             # 続きがあれば取得し、なければループを抜ける
             if not result.has_more:
                 break
-            result = dbx.files_continue(result.cursor)
+            result = dbx.files_list_folder_continue(result.cursor)
         # 処理後、空になったDropbox側の日付サブフォルダ(260414等)を削除
         for folder in sorted(processed_folders, key=lambda x: x.count('/'), reverse=True):
             try:
