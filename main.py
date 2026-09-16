@@ -12,8 +12,7 @@ APP_SECRET = os.getenv('APP_SECRET')
 REFRESH_TOKEN = os.getenv('REFRESH_TOKEN')
 WEBHOOK_URL = os.getenv('WEBHOOK_URL')
 DROPBOX_FOLDER = os.getenv('DROPBOX_FOLDER')
-
-LOCAL_BASE_DIR = ''
+LOCAL_BASE_DIR = os.getenv('LOCAL_BASE_DIR')
 
 def get_fiscal_year(date_obj):
     """日付から年度（4月始まり）を計算する"""
@@ -38,10 +37,10 @@ def main():
     today = datetime.date.today()
     fiscal_year = get_fiscal_year(today)
     target_dir = os.path.join(LOCAL_BASE_DIR, 'doc', '進捗報告', f'進捗報告{fiscal_year}年度')
-    
+
     # 保存先フォルダが存在しなければ作成
     os.makedirs(target_dir, exist_ok=True)
-    
+
     dbx = dropbox.Dropbox(
         app_key=APP_KEY,
         app_secret=APP_SECRET,
@@ -95,7 +94,7 @@ def main():
                 skipped_folders.append(f"{folder} (エラー: {e})")
         # 処理結果の通知
         if success_count > 0 or skipped_files or skipped_folders:
-            report_msg = "" 
+            report_msg = ""
 
             if success_count > 0:
                 report_msg += f"【転送完了】\n"

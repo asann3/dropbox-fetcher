@@ -35,6 +35,11 @@ uv run get_refresh_token.py
 
 `https://www.dropbox.com/home` 以降のパスを `.env` の `DROPBOX_FOLDER` に指定する（例: `/Lab/進捗報告`）。
 
+## LOCAL_BASE_DIR の指定方法
+
+保存先は `<LOCAL_BASE_DIR>/doc/進捗報告/進捗報告{年度}年度/` に自動的に決まる（`{年度}` は実行日から自動計算されるため指定不要）。
+`.env` の `LOCAL_BASE_DIR` には、`/doc` より手前のディレクトリの絶対パスを指定する（例: `/path/to/mount`）。
+
 以下を実行するとfetchが開始される。
 
 ```bash
